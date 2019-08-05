@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import './App.css';
 import Navigation from './components/Navigation';
 import FormTareas from './components/FormTareas';
-
+import axios from 'axios';
 
 class App extends Component {
   constructor() {
@@ -25,6 +25,12 @@ class App extends Component {
   }
   delete(index){
     if(window.confirm('¿Deseas eliminar este dato?')){
+        var idtarea = this.state.todos[index].idtarea;
+    
+      console.log(idtarea);
+      axios.get('http://localhost:3000/delete/'+idtarea)
+      .then(console.log('Deleted'))
+      .catch(err => console.log(err));
      this.setState({
         todos:this.state.todos.filter((e,i)=>{
           return i !== index
@@ -32,6 +38,7 @@ class App extends Component {
       })
     }
   }
+
 
   render(){
     const todos = this.state.todos.map((todo,i)=>{

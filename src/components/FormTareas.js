@@ -4,9 +4,7 @@ class FormTarea extends Component{
     constructor(){
         super();
         this.state={
-            idtarea:'1',
             title:'',
-            prority:'',
             description:'',
             name:''
         };
@@ -29,15 +27,17 @@ class FormTarea extends Component{
     handleSubmit(e){
         e.preventDefault();
         console.log("Enviando...",this.state);
-        fetch("http://localhost/tasks", {
+        fetch("http://localhost:3000/insert", {
             method: "POST",
-            body: this.state
+            body: {
+                todos: this.state
+            }
         })
         .then(function(response){ 
-        return response.json();   
+            return response.json();   
         })
-        .then(function(data){ 
-        console.log(data)
+        .then(function(body){ 
+            console.log("datos"+body);
         });
     }
     render(){

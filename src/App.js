@@ -10,8 +10,7 @@ class App extends Component {
     this.state={
       todos:[]
     };
-    console.log(this.state);
-    fetch('http://localhost:3000/posts')
+    fetch('http://localhost:3000/tasks')
     .then(res => res.json())
     .then(todos=>(this.setState({todos})))
     .catch(rejected => {
@@ -26,19 +25,21 @@ class App extends Component {
   }
   delete(index){
     if(window.confirm('¿Deseas eliminar este dato?')){
-      this.setState({
+     this.setState({
         todos:this.state.todos.filter((e,i)=>{
           return i !== index
         })
       })
     }
   }
+
   render(){
     const todos = this.state.todos.map((todo,i)=>{
       return(
         <div className="col-md-4">
           <div className="card mt-4 bg-transparent">
           <div className="card-header">
+            <p className="text-right">{todo.idtarea}</p>
             <h6 className="font-weight-bold">{todo.title}</h6>
             <span className="badge badge-pill ml-2">
                {todo.priority}

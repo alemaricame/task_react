@@ -4,6 +4,7 @@ class FormTarea extends Component{
     constructor(){
         super();
         this.state={
+            idtarea:'1',
             title:'',
             prority:'',
             description:'',
@@ -25,38 +26,46 @@ class FormTarea extends Component{
     }
 
     /* Guardar */
-
     handleSubmit(e){
         e.preventDefault();
-        this.props.onAddTodo(this.state);
         console.log("Enviando...",this.state);
+        fetch("http://localhost/tasks", {
+            method: "POST",
+            body: this.state
+        })
+        .then(function(response){ 
+        return response.json();   
+        })
+        .then(function(data){ 
+        console.log(data)
+        });
     }
     render(){
         return(
             <div className="mt-4">
             <form onSubmit={this.handleSubmit} className="mt-4">
                <div className="form-group">
-                   <label for="title">Título de la tarea: </label>
+                   <label htmlFor="title">Título de la tarea: </label>
                    <input name="title" onChange={this.handleInput} type="text" className="form-control" id="title" placeholder="Título de la tarea"></input>
                </div>
                <div className="form-group">
-                    <label for="priority">Prioridad: </label>
-                    <select name="priority" onChange={this.handleInput} id="priority" class="form-control">
-                        <option selected>Selecciona...</option>
+                    <label htmlFor="priority">Prioridad: </label>
+                    <select name="priority" id="priority" onChange={this.handleInput} className="form-control">
+                        <option value="default">Selecciona...</option>
                         <option value="baja">Baja</option>                        
                         <option value="media">Media</option>
                         <option value="alta">Alta</option>
                     </select>
                </div>
                <div className="form-group">
-                    <label for="description">Descripción de la tarea: </label>
+                    <label htmlFor="description">Descripción de la tarea: </label>
                     <textarea name="description" onChange={this.handleInput} id="description" className="form-control" placeholder="Descripción de la tarea"></textarea>
                 </div>
                 <div className="form-group">
-                    <label for="encargado">Encargado de la tarea: </label>
+                    <label htmlFor="encargado">Encargado de la tarea: </label>
                     <input name="name" onChange={this.handleInput} type="text" className="form-control" id="name" placeholder="Nombre"></input>
                 </div>
-                <button type="submit" class="btn btn-info">Guardar</button>
+                <button type="submit" className="btn btn-info">Guardar</button>
             </form>
             </div>
         );

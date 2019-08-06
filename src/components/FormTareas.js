@@ -6,11 +6,11 @@ class FormTarea extends Component{
         this.state={
             title:'',
             description:'',
-            name:''
+            names:''
         };
         this.handleInput = this.handleInput.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
-
+        
     }
     /* tomar datos */
     handleInput(e){
@@ -20,30 +20,39 @@ class FormTarea extends Component{
             [name]:value
         })
         console.log(this.state);
-        
+
     }
 
     /* Guardar */
     handleSubmit(e){
         e.preventDefault();
         console.log("Enviando...",this.state);
-        fetch("http://localhost:3000/insert", {
-            method: "POST",
-            body: {
-                todos: this.state
-            }
-        })
-        .then(function(response){ 
-            return response.json();   
-        })
-        .then(function(body){ 
-            console.log("datos"+body);
+        fetch('http://localhost:3000/insert' , {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body:JSON.stringify(this.state)
+            
+        }).then((result) => {
+            console.log(result);
+            this.props.onAddTodo(this.state);
+       
+                document.getElementById("form").reset();
+                this.setState({
+                    item :""
+                })
+            
         });
+
     }
+  
+
     render(){
         return(
             <div className="mt-4">
-            <form onSubmit={this.handleSubmit} className="mt-4">
+            <form id="form" onSubmit={this.handleSubmit} className="mt-4">
                <div className="form-group">
                    <label htmlFor="title">Título de la tarea: </label>
                    <input name="title" onChange={this.handleInput} type="text" className="form-control" id="title" placeholder="Título de la tarea"></input>
@@ -63,7 +72,7 @@ class FormTarea extends Component{
                 </div>
                 <div className="form-group">
                     <label htmlFor="encargado">Encargado de la tarea: </label>
-                    <input name="name" onChange={this.handleInput} type="text" className="form-control" id="name" placeholder="Nombre"></input>
+                    <input name="names" onChange={this.handleInput} type="text" className="form-control" id="names" placeholder="Nombre"></input>
                 </div>
                 <button type="submit" className="btn btn-info">Guardar</button>
             </form>
